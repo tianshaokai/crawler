@@ -6,7 +6,6 @@ public class TargetInfo implements Serializable {
     private Long id;
     private String url;
     private String title;
-    private String pageId;
     private String createTime;
     private String imageCount;
     private String hash;
@@ -35,14 +34,6 @@ public class TargetInfo implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getPageId() {
-        return pageId;
-    }
-
-    public void setPageId(String pageId) {
-        this.pageId = pageId;
     }
 
     public String getCreateTime() {
