@@ -1,0 +1,8 @@
+rootProject.name = 'crawler'
+include 'crawler-framework'
+include 'crawler-dao'
+include 'crawler-main'
+include 'crawler-util'
+include 'crawler-base'
+include 'crawler-service'
+
