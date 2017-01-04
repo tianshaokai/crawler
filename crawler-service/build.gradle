@@ -1,13 +1,2 @@
-version 'unspecified'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.5
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-}
+// jar包的名字
+archivesBaseName = 'crawler-service'

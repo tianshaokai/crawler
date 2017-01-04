@@ -1,6 +1,20 @@
-
 subprojects {
     apply plugin: 'java'
+    //apply plugin: 'maven'
+    apply plugin: 'idea'
+
+    group 'com.tianshaokai'
+    version '1.0-SNAPSHOT'
+
+    // java编译的时候缺省状态下会因为中文字符而失败  2.+ 写法
+//    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+
+    //编译JAVA文件时采用UTF-8
+//    tasks.withType(Compile) {
+//        options.encoding = "UTF-8"
+//    }
+
+    sourceCompatibility = 1.5
 
     repositories {
         mavenCentral()
