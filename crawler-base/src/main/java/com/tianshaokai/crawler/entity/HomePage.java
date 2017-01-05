@@ -10,8 +10,10 @@ public class HomePage implements Serializable {
     private String siteName;			// 站点名称
     private String url;
 
+    private String role;
+
     private Boolean dynamic;			// 动态
-    private Boolean stop;				// 是否启动
+    private Boolean start;				// 是否启动
 
     public Long getId() {
         return id;
@@ -37,6 +39,14 @@ public class HomePage implements Serializable {
         this.url = url;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Boolean getDynamic() {
         return dynamic;
     }
@@ -45,11 +55,11 @@ public class HomePage implements Serializable {
         this.dynamic = dynamic;
     }
 
-    public Boolean getStop() {
-        return stop;
+    public Boolean getStart() {
+        return start;
     }
 
-    public void setStop(Boolean stop) {
-        this.stop = stop;
+    public void setStart(Boolean start) {
+        this.start = start;
     }
 }

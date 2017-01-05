@@ -2,7 +2,7 @@ package com.tianshaokai.crawler.entity;
 
 import java.io.Serializable;
 
-public class TargetInfo implements Serializable {
+public class TargetPage implements Serializable {
     private Long id;
     private String url;
     private String title;

@@ -3,6 +3,7 @@ package com.tianshaokai.crawler.core.app;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -19,12 +20,12 @@ public class StartCrawler {
 //                System.out.println(link.attr("href") + " link.text() = " + link.text());
 //            }
 
-//            Document doc = Jsoup.connect("http://www.mzitu.com/83048").userAgent(userAgent).timeout(1000).get();
-//
-//            Elements links = doc.select("div.main-image img");
-//            for (Element link : links) {
-//                System.out.println(link.attr("src"));
-//            }
+            Document doc = Jsoup.connect("http://www.mzitu.com/83048").userAgent(userAgent).timeout(1000).get();
+
+            Elements links = doc.select("div.main-image img");
+            for (Element link : links) {
+                System.out.println(link.attr("src"));
+            }
 //
 //            Document doc2 = Jsoup.connect("http://www.mzitu.com/83048/2").userAgent(userAgent).timeout(1000).get();
 //
@@ -33,10 +34,13 @@ public class StartCrawler {
 //                System.out.println(link.attr("src"));
 //            }
 
-            Document doc = Jsoup.connect("http://www.mzitu.com/82941").userAgent(userAgent).timeout(1000).get();
+            //Document doc = Jsoup.connect("http://www.mzitu.com/83048").userAgent(userAgent).timeout(1000).get();
 
-            Elements links = doc.select("div.pagenavi span");
-            System.out.println(links.get(6).text());
+//            Elements links = doc.select("div.pagenavi span");
+//            System.out.println(links.get(6).text());
+
+//            Elements links = doc.select("div.pagenavi > a");
+//            System.out.println(links.get(4).text());
         } catch (IOException e) {
             e.printStackTrace();
         }
