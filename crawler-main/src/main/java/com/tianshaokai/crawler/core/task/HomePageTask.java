@@ -2,6 +2,7 @@ package com.tianshaokai.crawler.core.task;
 
 import com.tianshaokai.crawler.core.config.SiteConfig;
 import com.tianshaokai.crawler.entity.HomePage;
+import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class HomePageTask {
 
         for (TargetPage targetPage : allTargetPageList) {
 
+            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
+
+            logger.debug("爬取到的数量: {}", imageInfoList.size());
         }
 
 

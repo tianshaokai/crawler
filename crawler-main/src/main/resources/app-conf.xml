@@ -4,6 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="config" class="com.tianshaokai.crawler.core.config.SiteConfig"></bean>
+    <bean id="crawler" class="com.tianshaokai.crawler.core.task.Crawler"></bean>
+
     <bean id="homePageTask" class="com.tianshaokai.crawler.core.task.HomePageTask">
         <property name="config">
             <ref bean="config"></ref>
@@ -14,10 +17,28 @@
         </property>
     </bean>
 
-    <!--<bean id="homePageJobDetail" class="org.springframework.scheduling.">-->
+    <bean id="homePageJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 
-    <!--</bean>-->
+        <property name="targetObject">
+            <ref bean="homePageTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+    </bean>
 
-    <bean id="config" class="com.tianshaokai.crawler.core.config.SiteConfig"></bean>
-    <bean id="crawler" class="com.tianshaokai.crawler.core.task.Crawler"></bean>
+    <bean id="homePageSimpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="homePageJobDetail"></property>
+        <property name="startDelay" value="1000"></property><!--调度工厂实例化后，经过5s秒开始执行调度  -->
+        <property name="repeatInterval" value="120000"></property>
+    </bean>
+
+    <bean id="schdulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="homePageSimpleTrigger" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

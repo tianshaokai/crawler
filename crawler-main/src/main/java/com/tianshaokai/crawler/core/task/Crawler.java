@@ -1,6 +1,7 @@
 package com.tianshaokai.crawler.core.task;
 
 import com.tianshaokai.crawler.entity.HomePage;
+import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,26 +25,44 @@ public class Crawler {
         String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36";
         Document doc = null;
         try {
-            doc = Jsoup.connect("http://www.mzitu.com/83048").userAgent(userAgent).timeout(1000).get();
+            doc = Jsoup.connect(url).userAgent(userAgent).timeout(30000).get();
         } catch (IOException e) {
             logger.error("解析网页{}失败: {}", url, e.toString());
         }
         return doc;
     }
 
-    public void getTargetPageInfo(TargetPage targetPage, String role) {
+    public List<ImageInfo> getImagePageInfo(TargetPage targetPage, String role) {
 
+        List<ImageInfo> imageInfoList = new ArrayList<ImageInfo>();
         Document document = getDocument(targetPage.getUrl());
-        Elements totalLinks = document.select("div.pagenavi > a");
+        Elements totalLinks = document.select(role);
         String totalPage = totalLinks.get(4).text();
-        int total = Integer.parseInt(totalPage);
-        for (int i = 1; i < total; i++) {
-
-
+        List<String> targetUrlList = new ArrayList<String>();
+        for (int i = 1; i < Integer.parseInt(totalPage); i++) {
+            if(i == 1) {
+                continue;
+            }
+            String url = targetPage.getUrl() + "/" + i;
+            targetUrlList.add(url);
         }
 
-        Elements links = document.select("div.main-image img");
+        for (String url : targetUrlList) {
+            Document doc = getDocument(url);
+            if(doc == null) {
+                continue;
+            }
+            Elements links = doc.select("div.main-image img");
 
+            for (Element link : links) {
+                ImageInfo imageInfo = new ImageInfo();
+                imageInfo.setUrl(link.attr("src"));
+                imageInfo.setTargetId(targetPage.getId());
+
+                imageInfoList.add(imageInfo);
+            }
+        }
+        return imageInfoList;
     }
 
     /**
@@ -60,6 +79,7 @@ public class Crawler {
 
         Elements links = document.select(homePage.getRole());
         if(links == null) {
+            logger.error("未获取到数据");
             return targetPageList;
         }
 
