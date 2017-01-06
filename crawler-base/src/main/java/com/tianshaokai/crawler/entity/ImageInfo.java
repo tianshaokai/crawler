@@ -4,16 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ImageInfo implements Serializable {
-    private Long id;
+    private Integer id;
     private String url;
     private Date createTime;
-    private Long targetId;
+    private Integer targetId;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -33,11 +33,11 @@ public class ImageInfo implements Serializable {
         this.createTime = createTime;
     }
 
-    public Long getTargetId() {
+    public Integer getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(Long targetId) {
+    public void setTargetId(Integer targetId) {
         this.targetId = targetId;
     }
 }

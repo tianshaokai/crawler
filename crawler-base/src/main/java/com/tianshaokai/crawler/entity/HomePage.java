@@ -6,7 +6,7 @@ import java.io.Serializable;
  *  设置等待爬取的网站信息
  */
 public class HomePage implements Serializable {
-    private Long id;
+    private Integer id;
     private String siteName;			// 站点名称
     private String url;
 
@@ -15,11 +15,11 @@ public class HomePage implements Serializable {
     private Boolean dynamic;			// 动态
     private Boolean start;				// 是否启动
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

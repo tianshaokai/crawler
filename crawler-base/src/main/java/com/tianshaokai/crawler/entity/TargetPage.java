@@ -3,20 +3,18 @@ package com.tianshaokai.crawler.entity;
 import java.io.Serializable;
 
 public class TargetPage implements Serializable {
-    private Long id;
+    private Integer id;
     private String url;
     private String title;
     private String createTime;
-    private String imageCount;
-    private String hash;
 
-    private Long homePageId;
+    private Integer homePageId;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,27 +42,11 @@ public class TargetPage implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getImageCount() {
-        return imageCount;
-    }
-
-    public void setImageCount(String imageCount) {
-        this.imageCount = imageCount;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-    public Long getHomePageId() {
+    public Integer getHomePageId() {
         return homePageId;
     }
 
-    public void setHomePageId(Long homePageId) {
+    public void setHomePageId(Integer homePageId) {
         this.homePageId = homePageId;
     }
 }
