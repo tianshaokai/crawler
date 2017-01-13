@@ -10,6 +10,7 @@ public class SiteConfig {
     public List<HomePage> getAllPage() {
 
         List<HomePage> list = new ArrayList<HomePage>();
+
 //        HomePage homePage1 = new HomePage();
 //        homePage1.setId(1l);
 //        homePage1.setUrl("http://www.mzitu.com/all");
@@ -29,7 +30,7 @@ public class SiteConfig {
 //        homePage2.setStart(true);
 
         HomePage homePage3 = new HomePage();
-        homePage3.setId(3l);
+        homePage3.setId(3);
         homePage3.setUrl("http://www.dazui88.com/tag/tgod/");
         homePage3.setSiteName("蜜桃社");
         homePage3.setRole("div.lbtcimg1 p a[href]:has(span)");
@@ -37,6 +38,8 @@ public class SiteConfig {
         homePage3.setStart(true);
 
         list.add(homePage3);
+
+
         return list;
     }
 

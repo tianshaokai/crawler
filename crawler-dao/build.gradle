@@ -1,2 +1,6 @@
 // jar包的名字
 archivesBaseName = 'crawler-dao'
+
+dependencies {
+    compile project(':crawler-base')
+}

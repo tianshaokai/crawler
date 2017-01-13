@@ -1,2 +1,8 @@
 // jar包的名字
 archivesBaseName = 'crawler-service'
+
+dependencies {
+    compile project(':crawler-base')
+    compile project(':crawler-dao')
+    compile project(':crawler-util')
+}

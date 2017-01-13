@@ -3,6 +3,7 @@ package com.tianshaokai.crawler.core.task;
 import com.tianshaokai.crawler.core.config.SiteConfig;
 import com.tianshaokai.crawler.entity.HomePage;
 import com.tianshaokai.crawler.entity.TargetPage;
+import com.tianshaokai.crawler.service.HomePageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,19 @@ public class HomePageTask {
     private SiteConfig config;
     private Crawler crawler;
 
+    private HomePageService homePageService;
+
     public void execute() {
         logger.info("爬虫程序 开始");
+
+        homePageService.getAllHomePage();
         List<HomePage> homePageList = config.getAllPage();
         craw(homePageList);
        /* List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
 
         logger.debug("需要爬的总条数{}", allTargetPageList.size());
+
+
 
         for (TargetPage targetPage : allTargetPageList) {
 
@@ -31,6 +38,8 @@ public class HomePageTask {
 
             logger.debug("爬取到的数量: {}", imageInfoList.size());
         }*/
+
+
 
 
     }
@@ -65,5 +74,10 @@ public class HomePageTask {
 
     public void setCrawler(Crawler crawler) {
         this.crawler = crawler;
+    }
+
+    @Autowired
+    public void setHomePageService(HomePageService homePageService) {
+        this.homePageService = homePageService;
     }
 }

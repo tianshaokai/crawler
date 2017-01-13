@@ -2,5 +2,6 @@ apply plugin: 'war'
 
 
 dependencies {
-    //compile 'org.springframework:spring-webmvc:4.3.5.RELEASE'
+    compile project(':crawler-core')
+    compile 'org.springframework:spring-webmvc:4.3.5.RELEASE'
 }

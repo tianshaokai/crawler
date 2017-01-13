@@ -102,7 +102,7 @@ public class Crawler {
     public List<TargetPage> getTargetPageLink2(HomePage homePage) {
 
         List<TargetPage> targetPageList = new ArrayList<TargetPage>();
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         Document document = getDocument(homePage.getUrl());
         if(document == null) {
             return targetPageList;
@@ -166,7 +166,7 @@ public class Crawler {
 
     public void getImagePage2(String url) {
         System.out.println(url);
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         Document document = getDocument(url);
         if(document == null) {
             return;
