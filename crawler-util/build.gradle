@@ -1,8 +1,0 @@
-// jar包的名字
-archivesBaseName = 'crawler-util'
-
-dependencies {
-//    /compile project(':crawler-base')
-//    compile project(':crawler-dao')
-    compile project(':crawler-service')
-}
