@@ -4,6 +4,7 @@ import com.tianshaokai.crawler.core.config.SiteConfig;
 import com.tianshaokai.crawler.entity.HomePage;
 import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
+import com.tianshaokai.crawler.service.HomePageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,12 @@ public class HomePageTask {
     private SiteConfig config;
     private Crawler crawler;
 
+    private HomePageService homePageService;
+
     public void execute() {
         logger.info("爬虫程序 开始");
+
+        homePageService.getAllHomePage();
         List<HomePage> homePageList = config.getAllPage();
 
         List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
@@ -61,5 +66,10 @@ public class HomePageTask {
 
     public void setCrawler(Crawler crawler) {
         this.crawler = crawler;
+    }
+
+    @Autowired
+    public void setHomePageService(HomePageService homePageService) {
+        this.homePageService = homePageService;
     }
 }

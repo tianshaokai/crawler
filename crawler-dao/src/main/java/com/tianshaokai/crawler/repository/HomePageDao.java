@@ -4,6 +4,7 @@ import com.tianshaokai.crawler.entity.HomePage;
 
 import java.util.List;
 
+@MyBatisRepository
 public interface HomePageDao {
     int deleteByPrimaryKey(Integer id);
 

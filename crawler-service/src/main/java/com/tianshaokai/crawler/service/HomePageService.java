@@ -3,11 +3,11 @@ package com.tianshaokai.crawler.service;
 import com.tianshaokai.crawler.entity.HomePage;
 import com.tianshaokai.crawler.repository.HomePageDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Service
+@Component
 public class HomePageService {
 
     @Autowired

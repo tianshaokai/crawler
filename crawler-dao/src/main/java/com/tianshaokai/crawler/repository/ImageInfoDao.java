@@ -2,6 +2,7 @@ package com.tianshaokai.crawler.repository;
 
 import com.tianshaokai.crawler.entity.ImageInfo;
 
+@MyBatisRepository
 public interface ImageInfoDao {
     int deleteByPrimaryKey(Integer id);
 

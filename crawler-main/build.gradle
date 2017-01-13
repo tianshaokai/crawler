@@ -1,8 +1,8 @@
 //apply plugin: 'application'
 
 dependencies {
-    compile project(':crawler-base')
     compile project(':crawler-util')
+    compile project(':crawler-service')
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'org.quartz-scheduler:quartz:2.2.3'
 }

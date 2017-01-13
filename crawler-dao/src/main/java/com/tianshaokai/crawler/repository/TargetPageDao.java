@@ -2,6 +2,7 @@ package com.tianshaokai.crawler.repository;
 
 import com.tianshaokai.crawler.entity.TargetPage;
 
+@MyBatisRepository
 public interface TargetPageDao {
     int deleteByPrimaryKey(Integer id);
 
