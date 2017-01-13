@@ -2,7 +2,6 @@ package com.tianshaokai.crawler.core.task;
 
 import com.tianshaokai.crawler.core.config.SiteConfig;
 import com.tianshaokai.crawler.entity.HomePage;
-import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +20,8 @@ public class HomePageTask {
     public void execute() {
         logger.info("爬虫程序 开始");
         List<HomePage> homePageList = config.getAllPage();
-
-        List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
+        craw(homePageList);
+       /* List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
 
         logger.debug("需要爬的总条数{}", allTargetPageList.size());
 
@@ -31,9 +30,18 @@ public class HomePageTask {
             List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
 
             logger.debug("爬取到的数量: {}", imageInfoList.size());
+        }*/
+
+
+    }
+
+    private void craw(List<HomePage> homePageList) {
+        for (HomePage homePage : homePageList) {
+
+            crawler.getTargetPageLink2(homePage);
         }
-
-
+//        crawler.getImagePage2("http://www.dazui88.com/mitao/20160926207630.html");
+//        crawler.getImagePage2("http://www.dazui88.com/mitao/20161013212587.html");
     }
 
     private List<TargetPage> crawlerTargetPage(List<HomePage> homePageList) {

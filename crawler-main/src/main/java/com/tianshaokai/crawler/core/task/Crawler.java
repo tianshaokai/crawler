@@ -41,6 +41,8 @@ public class Crawler {
         List<String> targetUrlList = new ArrayList<String>();
         for (int i = 1; i < Integer.parseInt(totalPage); i++) {
             if(i == 1) {
+                String url = targetPage.getUrl();
+                targetUrlList.add(url);
                 continue;
             }
             String url = targetPage.getUrl() + "/" + i;
@@ -57,6 +59,7 @@ public class Crawler {
             for (Element link : links) {
                 ImageInfo imageInfo = new ImageInfo();
                 imageInfo.setUrl(link.attr("src"));
+                logger.debug("url: " + imageInfo.getUrl());
                 imageInfo.setTargetId(targetPage.getId());
 
                 imageInfoList.add(imageInfo);
@@ -96,5 +99,102 @@ public class Crawler {
     }
 
 
+    public List<TargetPage> getTargetPageLink2(HomePage homePage) {
 
+        List<TargetPage> targetPageList = new ArrayList<TargetPage>();
+        List<String> list = new ArrayList<>();
+        Document document = getDocument(homePage.getUrl());
+        if(document == null) {
+            return targetPageList;
+        }
+
+        Elements linktatall = document.select("span.pageinfo strong");
+        System.out.println(linktatall.get(0).text());
+
+        Elements linkurl = document.select("div.pagelist a");
+
+        String[] baseurl = linkurl.get(0).attr("href").split("_");
+        for (int i = 1; i <= Integer.parseInt(linktatall.get(0).text()); i++) {
+//            if (i == 1) {
+//                continue;
+//            }
+            String str = baseurl[0] + "_" + baseurl[1] + "_" + i + ".html";
+            System.out.println(str);
+            list.add(homePage.getUrl() + str);
+        }
+
+//        Elements links = document.select(homePage.getRole());
+//        if(links == null) {
+//            logger.error("未获取到数据");
+//            return targetPageList;
+//        }
+//
+//        for(Element link : links) {
+//            TargetPage targetPage = new TargetPage();
+//            targetPage.setUrl("http://www.dazui88.com" + link.attr("href"));
+//            targetPage.setTitle(link.text());
+//            System.out.println(targetPage.getUrl()+" "+targetPage.getTitle());
+//            targetPageList.add(targetPage);
+//        }
+
+        for (String s : list) {
+            System.out.println("加载分页网页： " + s);
+            Document doc = getDocument(s);
+            if(doc == null) {
+                continue;
+            }
+
+            Elements links2 = doc.select(homePage.getRole());
+            if(links2 == null) {
+                logger.error("未获取到数据");
+                continue;
+            }
+
+            for(Element link : links2) {
+                TargetPage targetPage = new TargetPage();
+                targetPage.setUrl("http://www.dazui88.com" + link.attr("href"));
+                targetPage.setTitle(link.text());
+                System.out.println(targetPage.getUrl()+" title: "+targetPage.getTitle());
+                targetPageList.add(targetPage);
+            }
+
+
+        }
+
+        return targetPageList;
+    }
+
+    public void getImagePage2(String url) {
+        System.out.println(url);
+        List<String> list = new ArrayList<>();
+        Document document = getDocument(url);
+        if(document == null) {
+            return;
+        }
+//        Elements links = document.select("div#efpBigPic img");
+//        for (Element link : links) {
+//            System.out.println(link.attr("src"));
+//        }
+        Elements elements = document.select("div.pagebreak1 a");
+        String s = elements.get(0).text();
+        System.out.println(s.substring(1, s.length() - 2));
+        for (int i = 1; i <= Integer.parseInt(s.substring(1, s.length() - 2)); i++) {
+            if (i == 1) {
+                list.add(url);
+                continue;
+            }
+            String str = url.substring(0, url.lastIndexOf("."));
+            list.add(str + "_" + i + ".html");
+        }
+        for (String str : list) {
+            Document doc = getDocument(str);
+            if(doc == null) {
+                return;
+            }
+            Elements linkList = doc.select("div#efpBigPic img");
+            for (Element link : linkList) {
+                System.out.println(link.attr("src"));
+            }
+        }
+    }
 }
