@@ -11,7 +11,11 @@ public class App {
      *
      */
     private App() {
-        context = new ClassPathXmlApplicationContext("/app-conf.xml", App.class);
+        String [] springConfXml = new String[] {
+                "/app-conf.xml",
+                "/spring-config.xml"
+        };
+        context = new ClassPathXmlApplicationContext(springConfXml, App.class);
     }
 
     public static App getInstance() {
