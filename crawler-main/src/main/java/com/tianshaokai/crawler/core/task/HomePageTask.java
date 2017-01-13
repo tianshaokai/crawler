@@ -26,12 +26,16 @@ public class HomePageTask {
 
         logger.debug("需要爬的总条数{}", allTargetPageList.size());
 
+
+
         for (TargetPage targetPage : allTargetPageList) {
 
             List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
 
             logger.debug("爬取到的数量: {}", imageInfoList.size());
         }
+
+
 
 
     }

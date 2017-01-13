@@ -11,6 +11,11 @@
     <sql id="Base_Column_List">
         id, siteName, url, dynamic, stop
     </sql>
+    <select id="selectAllHomePage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_home_page
+    </select>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>

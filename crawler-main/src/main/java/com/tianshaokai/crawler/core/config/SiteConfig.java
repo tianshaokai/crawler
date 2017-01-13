@@ -11,7 +11,7 @@ public class SiteConfig {
 
         List<HomePage> list = new ArrayList<HomePage>();
         HomePage homePage1 = new HomePage();
-        homePage1.setId(1l);
+        homePage1.setId(1);
         homePage1.setUrl("http://www.mzitu.com/all");
         homePage1.setSiteName("妹子图");
         homePage1.setRole("ul.archives a[href]");
