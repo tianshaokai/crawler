@@ -6,7 +6,6 @@
 
     <bean id="config" class="com.tianshaokai.crawler.core.config.SiteConfig"></bean>
     <bean id="crawler" class="com.tianshaokai.crawler.core.task.Crawler"></bean>
-    <bean id="homePageService" class="com.tianshaokai.crawler.service.HomePageService"></bean>
 
     <bean id="homePageTask" class="com.tianshaokai.crawler.core.task.HomePageTask">
         <property name="config">
@@ -15,10 +14,6 @@
 
         <property name="crawler">
             <ref bean="crawler"></ref>
-        </property>
-
-        <property name="homePageService">
-            <ref bean="homePageService"></ref>
         </property>
     </bean>
 

@@ -13,19 +13,16 @@
     </context:component-scan>
 
 
-    <beans profile="development">
-        <context:property-placeholder ignore-resource-not-found="true"
-                                      location="classpath*:/db.properties" />
-
-        <!-- DBCP连接池 -->
-        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-            <property name="driverClassName" value="${jdbc.driver}" />
-            <property name="url" value="${jdbc.url}" />
-            <property name="username" value="${jdbc.username}" />
-            <property name="password" value="${jdbc.password}" />
-            <property name="defaultAutoCommit" value="false" />
-        </bean>
-    </beans>
+    <context:property-placeholder ignore-resource-not-found="true"
+                                  location="classpath*:/db.properties" />
+    <!-- DBCP连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="defaultAutoCommit" value="false" />
+    </bean>
 
     <!-- MyBatis配置 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -39,7 +36,7 @@
     <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.tianshaokai.crawler.repository" />
-        <property name="annotationClass" value="com.tianshaokai.repository.MyBatisRepository"/>
+        <property name="annotationClass" value="com.tianshaokai.crawler.repository.MyBatisRepository"/>
     </bean>
 
 </beans>
