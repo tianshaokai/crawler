@@ -2,6 +2,8 @@ package com.tianshaokai.crawler.repository;
 
 import com.tianshaokai.crawler.entity.TargetPage;
 
+import java.util.List;
+
 @MyBatisRepository
 public interface TargetPageDao {
     int deleteByPrimaryKey(Integer id);
@@ -11,6 +13,8 @@ public interface TargetPageDao {
     int insertSelective(TargetPage record);
 
     TargetPage selectByPrimaryKey(Integer id);
+
+    List<TargetPage> selectAllTargetPage();
 
     int updateByPrimaryKeySelective(TargetPage record);
 

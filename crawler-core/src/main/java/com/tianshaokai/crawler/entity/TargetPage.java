@@ -1,12 +1,13 @@
 package com.tianshaokai.crawler.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class TargetPage implements Serializable {
     private Integer id;
     private String url;
     private String title;
-    private String createTime;
+    private Date createTime;
 
     private Integer homePageId;
 
@@ -34,11 +35,11 @@ public class TargetPage implements Serializable {
         this.title = title;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

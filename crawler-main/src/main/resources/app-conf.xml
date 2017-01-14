@@ -30,7 +30,7 @@
     <bean id="homePageSimpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="homePageJobDetail"></property>
         <property name="startDelay" value="1000"></property><!--调度工厂实例化后，经过5s秒开始执行调度  -->
-        <property name="repeatInterval" value="120000"></property>
+        <property name="repeatInterval" value="12000000000000000"></property>
     </bean>
 
     <bean id="schdulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

@@ -2,8 +2,11 @@ package com.tianshaokai.crawler.core.task;
 
 import com.tianshaokai.crawler.core.config.SiteConfig;
 import com.tianshaokai.crawler.entity.HomePage;
+import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
 import com.tianshaokai.crawler.service.HomePageService;
+import com.tianshaokai.crawler.service.ImageInfoService;
+import com.tianshaokai.crawler.service.TargetPageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +21,32 @@ public class HomePageTask {
     private SiteConfig config;
     private Crawler crawler;
 
+    @Autowired
     private HomePageService homePageService;
+    @Autowired
+    private TargetPageService targetPageService;
+    @Autowired
+    private ImageInfoService imageInfoService;
 
     public void execute() {
         logger.info("爬虫程序 开始");
 
         homePageService.getAllHomePage();
         List<HomePage> homePageList = config.getAllPage();
-        craw(homePageList);
-       /* List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
+//        craw(homePageList);
+        List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
 
         logger.debug("需要爬的总条数{}", allTargetPageList.size());
 
-
-
         for (TargetPage targetPage : allTargetPageList) {
-
+            targetPageService.insertTargetPage(targetPage);
             List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
 
             logger.debug("爬取到的数量: {}", imageInfoList.size());
-        }*/
+            for (ImageInfo image : imageInfoList) {
+                imageInfoService.insertImageInfo(image);
+            }
+        }
 
 
 
@@ -74,10 +83,5 @@ public class HomePageTask {
 
     public void setCrawler(Crawler crawler) {
         this.crawler = crawler;
-    }
-
-    @Autowired
-    public void setHomePageService(HomePageService homePageService) {
-        this.homePageService = homePageService;
     }
 }

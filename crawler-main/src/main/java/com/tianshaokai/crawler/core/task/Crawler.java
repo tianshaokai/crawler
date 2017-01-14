@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class Crawler {
                 ImageInfo imageInfo = new ImageInfo();
                 imageInfo.setUrl(link.attr("src"));
                 logger.debug("url: " + imageInfo.getUrl());
+                imageInfo.setCreateTime(new Date());
                 imageInfo.setTargetId(targetPage.getId());
 
                 imageInfoList.add(imageInfo);
@@ -90,7 +92,7 @@ public class Crawler {
             TargetPage targetPage = new TargetPage();
             targetPage.setUrl(link.attr("href"));
             targetPage.setTitle(link.text());
-
+            targetPage.setCreateTime(new Date());
             targetPage.setHomePageId(homePage.getId());
 
             targetPageList.add(targetPage);
