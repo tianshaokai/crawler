@@ -26,7 +26,7 @@ public class Crawler {
         String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36";
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).userAgent(userAgent).timeout(30000).get();
+            doc = Jsoup.connect(url).userAgent(userAgent).timeout(60000).get();
         } catch (IOException e) {
             logger.error("解析网页{}失败: {}", url, e.toString());
         }
