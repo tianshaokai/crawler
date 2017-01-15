@@ -19,4 +19,6 @@ public interface TargetPageDao {
     int updateByPrimaryKeySelective(TargetPage record);
 
     int updateByPrimaryKey(TargetPage record);
+
+    TargetPage selectByHash(String dstS);
 }

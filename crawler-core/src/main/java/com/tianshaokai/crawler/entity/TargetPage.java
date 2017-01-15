@@ -8,7 +8,7 @@ public class TargetPage implements Serializable {
     private String url;
     private String title;
     private Date createTime;
-
+    private String hash;
     private Integer homePageId;
 
     public Integer getId() {
@@ -41,6 +41,14 @@ public class TargetPage implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public Integer getHomePageId() {

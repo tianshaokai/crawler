@@ -1,6 +1,7 @@
 package com.tianshaokai.crawler.core.task;
 
 import com.tianshaokai.crawler.core.config.SiteConfig;
+import com.tianshaokai.crawler.core.util.DigestHashUtil;
 import com.tianshaokai.crawler.entity.HomePage;
 import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
@@ -39,10 +40,16 @@ public class HomePageTask {
         logger.debug("需要爬的总条数{}", allTargetPageList.size());
 
         for (TargetPage targetPage : allTargetPageList) {
-            targetPageService.insertTargetPage(targetPage);
-            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
 
+            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
+            if (imageInfoList != null && imageInfoList.size() == 0) {
+                targetPageService.insertTargetPage(targetPage);
+                continue;
+            }
             logger.debug("爬取到的数量: {}", imageInfoList.size());
+            targetPage.setHash(DigestHashUtil.hash(targetPage.getUrl()));
+            targetPageService.insertTargetPage(targetPage);
+
             for (ImageInfo image : imageInfoList) {
                 imageInfoService.insertImageInfo(image);
             }

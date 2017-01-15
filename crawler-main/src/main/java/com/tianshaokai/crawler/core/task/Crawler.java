@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +23,10 @@ public class Crawler {
 
     private Logger logger = LoggerFactory.getLogger(Crawler.class);
 
+    private DuplicatedChecker duplicatedChecker;
+
     private Document getDocument(String url) {
+        long start = System.currentTimeMillis();
         String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36";
         Document doc = null;
         try {
@@ -30,6 +34,8 @@ public class Crawler {
         } catch (IOException e) {
             logger.error("解析网页{}失败: {}", url, e.toString());
         }
+        long end = System.currentTimeMillis();
+        logger.debug("解析网页时间: {}", (end - start)/1000 + "s.");
         return doc;
     }
 
@@ -37,6 +43,9 @@ public class Crawler {
 
         List<ImageInfo> imageInfoList = new ArrayList<ImageInfo>();
         Document document = getDocument(targetPage.getUrl());
+        if(document == null) {
+            return imageInfoList;
+        }
         Elements totalLinks = document.select(role);
         String totalPage = totalLinks.get(4).text();
         List<String> targetUrlList = new ArrayList<String>();
@@ -89,8 +98,13 @@ public class Crawler {
         }
 
         for(Element link : links) {
+            String url = link.attr("href");
+            if (duplicatedChecker.isDuplicated(url)) {
+                logger.debug("已经爬取过该链接，url: {}", url);
+                continue;
+            }
             TargetPage targetPage = new TargetPage();
-            targetPage.setUrl(link.attr("href"));
+            targetPage.setUrl(url);
             targetPage.setTitle(link.text());
             targetPage.setCreateTime(new Date());
             targetPage.setHomePageId(homePage.getId());
@@ -198,5 +212,10 @@ public class Crawler {
                 System.out.println(link.attr("src"));
             }
         }
+    }
+
+    @Autowired
+    public void setDuplicatedChecker(DuplicatedChecker duplicatedChecker) {
+        this.duplicatedChecker = duplicatedChecker;
     }
 }

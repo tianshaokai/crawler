@@ -5,7 +5,12 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="config" class="com.tianshaokai.crawler.core.config.SiteConfig"></bean>
-    <bean id="crawler" class="com.tianshaokai.crawler.core.task.Crawler"></bean>
+    <bean id="duplicatedChecker" class="com.tianshaokai.crawler.core.task.DuplicatedChecker"></bean>
+    <bean id="crawler" class="com.tianshaokai.crawler.core.task.Crawler">
+        <property name="duplicatedChecker">
+            <ref bean="duplicatedChecker"></ref>
+        </property>
+    </bean>
 
     <bean id="homePageTask" class="com.tianshaokai.crawler.core.task.HomePageTask">
         <property name="config">

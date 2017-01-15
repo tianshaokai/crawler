@@ -21,7 +21,7 @@ public class TargetPageController {
 
     @RequestMapping(value = "/getTargetPage")
     public void getAllTargetPage() {
-        List<TargetPage> targetPageList = targetPageService.getTargetPage();
-        logger.debug("ÃÃ×ÓËùÓĞÀàĞÍ: {}", targetPageList.size());
+        List<TargetPage> targetPageList = targetPageService.getAllTargetPage();
+        logger.debug("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {}", targetPageList.size());
     }
 }

@@ -6,10 +6,11 @@
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="DATE"/>
+        <result column="hash" property="hash" jdbcType="VARCHAR" />
         <result column="homePageId" property="homePageId" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, url, title, createTime, homePageId
+        id, url, title, createTime, hash, homePageId
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -28,9 +29,9 @@
     </delete>
     <insert id="insert" parameterType="com.tianshaokai.crawler.entity.TargetPage">
         insert into t_target_page (id, url, title,
-        createTime, homePageId)
+        createTime, hash, homePageId)
         values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
-        #{createTime,jdbcType=DATE}, #{homePageId,jdbcType=INTEGER})
+        #{createTime,jdbcType=DATE}, #{hash,jdbcType=VARCHAR}, #{homePageId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.tianshaokai.crawler.entity.TargetPage">
         insert into t_target_page
@@ -46,6 +47,9 @@
             </if>
             <if test="createTime != null">
                 createTime,
+            </if>
+            <if test="hash != null" >
+                hash,
             </if>
             <if test="homePageId != null">
                 homePageId,
@@ -64,6 +68,9 @@
             <if test="createTime != null">
                 #{createTime,jdbcType=DATE},
             </if>
+            <if test="hash != null" >
+                #{hash,jdbcType=VARCHAR},
+            </if>
             <if test="homePageId != null">
                 #{homePageId,jdbcType=INTEGER},
             </if>
@@ -81,6 +88,9 @@
             <if test="createTime != null">
                 createTime = #{createTime,jdbcType=DATE},
             </if>
+            <if test="hash != null" >
+                hash = #{hash,jdbcType=VARCHAR},
+            </if>
             <if test="homePageId != null">
                 homePageId = #{homePageId,jdbcType=INTEGER},
             </if>
@@ -92,7 +102,12 @@
         set url = #{url,jdbcType=VARCHAR},
         title = #{title,jdbcType=VARCHAR},
         createTime = #{createTime,jdbcType=DATE},
+        hash = #{hash,jdbcType=VARCHAR},
         homePageId = #{homePageId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="selectByHash" resultType="com.tianshaokai.crawler.entity.TargetPage" parameterType="java.lang.String">
+        SELECT * FROM t_target_page WHERE hash = #{hash,jdbcType=VARCHAR}
+    </select>
 </mapper>
