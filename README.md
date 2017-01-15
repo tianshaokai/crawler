@@ -1,5 +1,5 @@
 # 爬取妹子图
-### 爬虫程序项目结构
+### crawler 的项目结构
 1. crawler-core 是基础模块
 2. crawler-main 是爬虫主程序
 3. crawler-framework 是爬虫设置程序及浏览程序
