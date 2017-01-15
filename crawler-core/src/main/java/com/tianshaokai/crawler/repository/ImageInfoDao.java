@@ -2,6 +2,8 @@ package com.tianshaokai.crawler.repository;
 
 import com.tianshaokai.crawler.entity.ImageInfo;
 
+import java.util.List;
+
 @MyBatisRepository
 public interface ImageInfoDao {
     int deleteByPrimaryKey(Integer id);
@@ -12,7 +14,11 @@ public interface ImageInfoDao {
 
     ImageInfo selectByPrimaryKey(Integer id);
 
+    List<ImageInfo> selectAllImageInfo();
+
     int updateByPrimaryKeySelective(ImageInfo record);
 
     int updateByPrimaryKey(ImageInfo record);
+
+    ImageInfo selectByHash(String dstS);
 }

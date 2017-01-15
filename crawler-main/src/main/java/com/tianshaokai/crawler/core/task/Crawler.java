@@ -67,8 +67,13 @@ public class Crawler {
             Elements links = doc.select("div.main-image img");
 
             for (Element link : links) {
+                String imageUrl = link.attr("src");
+                if (duplicatedChecker.isCrawlerImageInfo(imageUrl)) {
+                    logger.debug("已经爬取过该链接，url: {}", url);
+                    continue;
+                }
                 ImageInfo imageInfo = new ImageInfo();
-                imageInfo.setUrl(link.attr("src"));
+                imageInfo.setUrl(imageUrl);
                 logger.debug("url: " + imageInfo.getUrl());
                 imageInfo.setCreateTime(new Date());
                 imageInfo.setTargetId(targetPage.getId());

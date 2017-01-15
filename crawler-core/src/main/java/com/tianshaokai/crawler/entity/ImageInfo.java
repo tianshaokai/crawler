@@ -7,6 +7,7 @@ public class ImageInfo implements Serializable {
     private Integer id;
     private String url;
     private Date createTime;
+    private String hash;
     private Integer targetId;
 
     public Integer getId() {
@@ -31,6 +32,14 @@ public class ImageInfo implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public Integer getTargetId() {

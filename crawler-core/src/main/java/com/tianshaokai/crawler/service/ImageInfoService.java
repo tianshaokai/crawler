@@ -5,6 +5,8 @@ import com.tianshaokai.crawler.repository.ImageInfoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @SuppressWarnings("SpringJavaAutowiringInspection")
 public class ImageInfoService {
@@ -14,6 +16,14 @@ public class ImageInfoService {
 
     public void insertImageInfo(ImageInfo record) {
         imageInfoDao.insertSelective(record);
+    }
+
+    public List<ImageInfo> selectAllImageInfo() {
+        return imageInfoDao.selectAllImageInfo();
+    }
+
+    public void updateImageInfo(ImageInfo imageInfo) {
+        imageInfoDao.updateByPrimaryKeySelective(imageInfo);
     }
 
 }
