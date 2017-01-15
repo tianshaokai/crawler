@@ -3,6 +3,7 @@
 1. crawler-core 是基础模块
 2. crawler-main 是爬虫主程序
 3. crawler-framework 是爬虫设置程序及浏览程序
+4. 项目采用多模块Spring, Spring MVC, Mybatis
 
 ### 现在已经完成了初步爬取功能，以后还会继续完善
 ### crawler 的远大理想
