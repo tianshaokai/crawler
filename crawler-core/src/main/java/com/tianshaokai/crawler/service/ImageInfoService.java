@@ -1,6 +1,7 @@
 package com.tianshaokai.crawler.service;
 
 import com.tianshaokai.crawler.entity.ImageInfo;
+import com.tianshaokai.crawler.entity.TargetPage;
 import com.tianshaokai.crawler.repository.ImageInfoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,8 +19,12 @@ public class ImageInfoService {
         imageInfoDao.insertSelective(record);
     }
 
-    public List<ImageInfo> selectAllImageInfo() {
+    public List<ImageInfo> getAllImageInfo() {
         return imageInfoDao.selectAllImageInfo();
+    }
+
+    public ImageInfo getImageInfo(Integer ID) {
+        return imageInfoDao.selectByPrimaryKey(ID);
     }
 
     public void updateImageInfo(ImageInfo imageInfo) {

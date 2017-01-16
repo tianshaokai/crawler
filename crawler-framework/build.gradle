@@ -4,4 +4,7 @@ apply plugin: 'war'
 dependencies {
     compile project(':crawler-core')
     compile 'org.springframework:spring-webmvc:4.3.5.RELEASE'
+    //compile 'com.fasterxml.jackson.core:jackson-core:2.8.6'
+    compile 'com.google.code.gson:gson:2.8.0'
+
 }

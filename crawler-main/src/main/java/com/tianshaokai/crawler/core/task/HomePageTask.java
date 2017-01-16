@@ -33,36 +33,27 @@ public class HomePageTask {
         logger.info("爬虫程序 开始");
 
 //        homePageService.getAllHomePage();
-//        List<HomePage> homePageList = config.getAllPage();
-////        craw(homePageList);
-//        List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
-//
-//        logger.debug("需要爬的总条数{}", allTargetPageList.size());
-//
-//        for (TargetPage targetPage : allTargetPageList) {
-//
-//            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
-//            if (imageInfoList != null && imageInfoList.size() == 0) {
-//                targetPageService.insertTargetPage(targetPage);
-//                continue;
-//            }
-//            logger.debug("爬取到的数量: {}", imageInfoList.size());
-//            targetPage.setHash(DigestHashUtil.hash(targetPage.getUrl()));
-//            targetPageService.insertTargetPage(targetPage);
-//
-//            for (ImageInfo image : imageInfoList) {
-//                imageInfoService.insertImageInfo(image);
-//            }
-//        }
+        List<HomePage> homePageList = config.getAllPage();
+//        craw(homePageList);
+        List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
 
-        List<ImageInfo> imageInfoList = imageInfoService.selectAllImageInfo();
-        for (ImageInfo imageInfo : imageInfoList) {
-            imageInfo.setHash(DigestHashUtil.hash(imageInfo.getUrl()));
+        logger.debug("需要爬的总条数{}", allTargetPageList.size());
 
-            imageInfoService.updateImageInfo(imageInfo);
+        for (TargetPage targetPage : allTargetPageList) {
+
+            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
+            if (imageInfoList != null && imageInfoList.size() == 0) {
+                targetPageService.insertTargetPage(targetPage);
+                continue;
+            }
+            logger.debug("爬取到的数量: {}", imageInfoList.size());
+            targetPage.setHash(DigestHashUtil.hash(targetPage.getUrl()));
+            targetPageService.insertTargetPage(targetPage);
+
+            for (ImageInfo image : imageInfoList) {
+                imageInfoService.insertImageInfo(image);
+            }
         }
-
-
     }
 
     private void craw(List<HomePage> homePageList) {

@@ -1,6 +1,5 @@
 package com.tianshaokai.crawler.service;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import com.tianshaokai.crawler.entity.TargetPage;
 import com.tianshaokai.crawler.repository.TargetPageDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class TargetPageService {
         return targetPageDao.selectAllTargetPage();
     }
 
-    public TargetPage getAllTargetPage(Integer ID) {
+    public TargetPage getTargetPage(Integer ID) {
         return targetPageDao.selectByPrimaryKey(ID);
     }
 
