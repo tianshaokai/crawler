@@ -51,6 +51,7 @@ public class HomePageTask {
             targetPageService.insertTargetPage(targetPage);
 
             for (ImageInfo image : imageInfoList) {
+                image.setTargetId(targetPage.getId());
                 imageInfoService.insertImageInfo(image);
             }
         }

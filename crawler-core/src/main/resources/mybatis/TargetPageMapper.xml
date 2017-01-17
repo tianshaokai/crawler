@@ -33,7 +33,7 @@
         values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
         #{createTime,jdbcType=DATE}, #{hash,jdbcType=VARCHAR}, #{homePageId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.tianshaokai.crawler.entity.TargetPage">
+    <insert id="insertSelective" parameterType="com.tianshaokai.crawler.entity.TargetPage" useGeneratedKeys="true" keyProperty="id">
         insert into t_target_page
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
