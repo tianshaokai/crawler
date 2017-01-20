@@ -16,6 +16,8 @@ public interface ImageInfoDao {
 
     List<ImageInfo> selectAllImageInfo();
 
+    List<ImageInfo> selectAllImageInfoByPage();
+
     int updateByPrimaryKeySelective(ImageInfo record);
 
     int updateByPrimaryKey(ImageInfo record);

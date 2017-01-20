@@ -1,8 +1,10 @@
 package com.tianshaokai.crawler.service;
 
 import com.tianshaokai.crawler.entity.ImageInfo;
+import com.tianshaokai.crawler.entity.Page;
 import com.tianshaokai.crawler.entity.TargetPage;
 import com.tianshaokai.crawler.repository.ImageInfoDao;
+import com.tianshaokai.crawler.utils.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,12 @@ public class ImageInfoService {
 
     public List<ImageInfo> getAllImageInfo() {
         return imageInfoDao.selectAllImageInfo();
+    }
+
+    public Page getAllImageInfoByPage(Integer pageNum, Integer pageSize) {
+        List<ImageInfo> imageInfoList = imageInfoDao.selectAllImageInfoByPage();
+        Page page = PageUtil.getPage(pageNum, pageSize, imageInfoList);
+        return page;
     }
 
     public ImageInfo getImageInfo(Integer ID) {

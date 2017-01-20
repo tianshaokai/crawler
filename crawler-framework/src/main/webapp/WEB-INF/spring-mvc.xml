@@ -10,7 +10,7 @@
        <mvc:annotation-driven>
               <mvc:message-converters>
                      <ref bean="stringHttpMessageConverter" />
-                     <ref bean="mappingJackson2HttpMessageConverter" />
+                     <!--<ref bean="mappingJackson2HttpMessageConverter" />-->
               </mvc:message-converters>
        </mvc:annotation-driven>
 
@@ -22,18 +22,18 @@
 
        <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
        <!-- Jackson 是Spring 自带的功能 -->
-       <bean id="mappingJackson2HttpMessageConverter"
-             class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-              <property name="supportedMediaTypes">
-                     <list>
-                            <value>application/json;charset=UTF-8</value>
-                            <value>application/xml;charset=UTF-8</value>
-                            <value>text/html;charset=UTF-8</value>
-                            <value>text/plain;charset=UTF-8</value>
-                            <value>text/xml;charset=UTF-8</value>
-                            <value>text/javascript;charset=UTF-8</value>
-                     </list>
-              </property>
-       </bean>
+       <!--<bean id="mappingJackson2HttpMessageConverter"-->
+             <!--class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+              <!--<property name="supportedMediaTypes">-->
+                     <!--<list>-->
+                            <!--<value>application/json;charset=UTF-8</value>-->
+                            <!--<value>application/xml;charset=UTF-8</value>-->
+                            <!--<value>text/html;charset=UTF-8</value>-->
+                            <!--<value>text/plain;charset=UTF-8</value>-->
+                            <!--<value>text/xml;charset=UTF-8</value>-->
+                            <!--<value>text/javascript;charset=UTF-8</value>-->
+                     <!--</list>-->
+              <!--</property>-->
+       <!--</bean>-->
 
 </beans>
