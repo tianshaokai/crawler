@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class HomePageTask {
@@ -32,49 +33,95 @@ public class HomePageTask {
     public void execute() {
         logger.info("爬虫程序 开始");
 
-//        homePageService.getAllHomePage();
-        List<HomePage> homePageList = config.getAllPage();
-//        craw(homePageList);
-        List<TargetPage> allTargetPageList = crawlerTargetPage(homePageList);
+//        crawler.craw();
 
-        logger.debug("需要爬的总条数{}", allTargetPageList.size());
+        //获取待爬取配置
+        LinkedList<HomePage> homePageList = config.getAllPage();
 
-        for (TargetPage targetPage : allTargetPageList) {
+        crawlerTargetUrl(homePageList);
+    }
 
-            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage, "div.pagenavi > a");
-            if (imageInfoList != null && imageInfoList.size() == 0) {
+    private void crawlerTargetUrl(LinkedList<HomePage> homePageList) {
+        if (homePageList.isEmpty()) {
+            getImageUrl();
+            return;
+        }
+        HomePage homePage = homePageList.removeFirst();
+
+        List<HomePage> homePageTotalList = crawler.getHomePageTotalList(homePage);
+        //获取待爬的目标地址
+        List<TargetPage> allTargetPageList = crawlerTargetPage(homePageTotalList);
+
+        logger.debug("需要爬的总条数：{}", allTargetPageList.size());
+
+        if (allTargetPageList.isEmpty()) {
+            getImageUrl();
+        } else {
+            for (TargetPage targetPage : allTargetPageList) {
                 targetPageService.insertTargetPage(targetPage);
+                logger.debug("待爬地址：{}, 已经插入数据库", targetPage.getUrl());
+//
+//            List<ImageInfo> imageInfoList = crawler.getImagePageInfo(targetPage);
+//            if (imageInfoList != null && imageInfoList.isEmpty()) {
+//                continue;
+//            }
+//            logger.debug("爬取到的数量: {}", imageInfoList.size());
+//
+//            for (ImageInfo image : imageInfoList) {
+//                imageInfoService.insertImageInfo(image);
+//            }
+            }
+
+            crawlerTargetPage(homePageList);
+        }
+
+
+    }
+
+    private void getImageUrl() {
+        List<TargetPage> targetPageList = targetPageService.getAllTargetPage();
+        for (TargetPage targetPage : targetPageList) {
+
+            List<ImageInfo> imageInfoList = crawler.getImagePageInfo2(targetPage);
+            if (imageInfoList != null && imageInfoList.isEmpty()) {
                 continue;
             }
             logger.debug("爬取到的数量: {}", imageInfoList.size());
-            targetPage.setHash(DigestHashUtil.hash(targetPage.getUrl()));
-            targetPageService.insertTargetPage(targetPage);
 
             for (ImageInfo image : imageInfoList) {
-                image.setTargetId(targetPage.getId());
                 imageInfoService.insertImageInfo(image);
+            }
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void craw(List<HomePage> homePageList) {
-        for (HomePage homePage : homePageList) {
 
-            crawler.getTargetPageLink2(homePage);
-        }
-//        crawler.getImagePage2("http://www.dazui88.com/mitao/20160926207630.html");
-//        crawler.getImagePage2("http://www.dazui88.com/mitao/20161013212587.html");
-    }
-
+    /**
+     * 爬取妹子图 待爬目标页
+     * @param homePageList
+     * @return
+     */
     private List<TargetPage> crawlerTargetPage(List<HomePage> homePageList) {
 
         List<TargetPage> allTargetPageList = new ArrayList<TargetPage>();
         for (HomePage homePage : homePageList) {
-            List<TargetPage> targetPageList = crawler.getTargetPageLink(homePage);
+//            List<TargetPage> targetPageList = crawler.getTargetPageLink(homePage);
+            List<TargetPage> targetPageList = crawler.getTargetPageLink2(homePage);
             if(targetPageList == null) {
                 continue;
             }
             allTargetPageList.addAll(targetPageList);
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return allTargetPageList;
     }

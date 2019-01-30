@@ -11,6 +11,9 @@ public class HomePage implements Serializable {
     private String url;
 
     private String role;
+    private String role2;
+    private String role3;
+    private String totalPageRole;
 
     private Boolean dynamic;			// 动态
     private Boolean start;				// 是否启动
@@ -61,5 +64,29 @@ public class HomePage implements Serializable {
 
     public void setStart(Boolean start) {
         this.start = start;
+    }
+
+    public String getRole2() {
+        return role2;
+    }
+
+    public void setRole2(String role2) {
+        this.role2 = role2;
+    }
+
+    public String getRole3() {
+        return role3;
+    }
+
+    public void setRole3(String role3) {
+        this.role3 = role3;
+    }
+
+    public String getTotalPageRole() {
+        return totalPageRole;
+    }
+
+    public void setTotalPageRole(String totalPageRole) {
+        this.totalPageRole = totalPageRole;
     }
 }

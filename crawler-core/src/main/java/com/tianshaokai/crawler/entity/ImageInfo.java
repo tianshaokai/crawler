@@ -6,6 +6,7 @@ import java.util.Date;
 public class ImageInfo implements Serializable {
     private Integer id;
     private String url;
+    private String targetUrl;
     private Date createTime;
     private String hash;
     private Integer targetId;
@@ -48,5 +49,13 @@ public class ImageInfo implements Serializable {
 
     public void setTargetId(Integer targetId) {
         this.targetId = targetId;
+    }
+
+    public String getTargetUrl() {
+        return targetUrl;
+    }
+
+    public void setTargetUrl(String targetUrl) {
+        this.targetUrl = targetUrl;
     }
 }

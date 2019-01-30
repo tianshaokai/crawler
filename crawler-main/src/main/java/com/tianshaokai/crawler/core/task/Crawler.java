@@ -1,5 +1,6 @@
 package com.tianshaokai.crawler.core.task;
 
+import com.tianshaokai.crawler.core.util.DigestHashUtil;
 import com.tianshaokai.crawler.entity.HomePage;
 import com.tianshaokai.crawler.entity.ImageInfo;
 import com.tianshaokai.crawler.entity.TargetPage;
@@ -32,24 +33,27 @@ public class Crawler {
         try {
             doc = Jsoup.connect(url).userAgent(userAgent).timeout(60000).get();
         } catch (IOException e) {
-            logger.error("解析网页{}失败: {}", url, e.toString());
+            logger.error("解析网页 {} 失败: {}", url, e.toString());
         }
         long end = System.currentTimeMillis();
         logger.debug("解析网页时间: {}", (end - start)/1000 + "s.");
         return doc;
     }
 
-    public List<ImageInfo> getImagePageInfo(TargetPage targetPage, String role) {
+    public List<ImageInfo> getImagePageInfo(TargetPage targetPage) {
 
         List<ImageInfo> imageInfoList = new ArrayList<ImageInfo>();
         Document document = getDocument(targetPage.getUrl());
         if(document == null) {
             return imageInfoList;
         }
-        Elements totalLinks = document.select(role);
+        Elements totalLinks = document.select(targetPage.getRole());
+        if (totalLinks.size() < 5) {
+            return imageInfoList;
+        }
         String totalPage = totalLinks.get(4).text();
         List<String> targetUrlList = new ArrayList<String>();
-        for (int i = 1; i < Integer.parseInt(totalPage); i++) {
+        for (int i = 1; i <= Integer.parseInt(totalPage); i++) {
             if(i == 1) {
                 String url = targetPage.getUrl();
                 targetUrlList.add(url);
@@ -60,21 +64,25 @@ public class Crawler {
         }
 
         for (String url : targetUrlList) {
+            logger.debug("爬取的目标url: {}", url);
             Document doc = getDocument(url);
             if(doc == null) {
+                logger.error("爬取的目标, 失败的url: {}", url);
                 continue;
             }
-            Elements links = doc.select("div.main-image img");
+            Elements links = doc.select(targetPage.getRole2());
 
             for (Element link : links) {
                 String imageUrl = link.attr("src");
                 if (duplicatedChecker.isCrawlerImageInfo(imageUrl)) {
-                    logger.debug("已经爬取过该链接，url: {}", url);
+                    logger.warn("已经爬取过该链接，url: {}", url);
                     continue;
                 }
                 ImageInfo imageInfo = new ImageInfo();
                 imageInfo.setUrl(imageUrl);
-                logger.debug("url: " + imageInfo.getUrl());
+                imageInfo.setTargetUrl(targetPage.getUrl());
+                imageInfo.setHash(DigestHashUtil.hash(imageUrl));
+
                 imageInfo.setCreateTime(new Date());
                 imageInfo.setTargetId(targetPage.getId());
 
@@ -85,7 +93,7 @@ public class Crawler {
     }
 
     /**
-     *  返回 所有子url 信息
+     *  返回 所有妹子图 目标页
      * @return
      */
     public List<TargetPage> getTargetPageLink(HomePage homePage) {
@@ -105,7 +113,7 @@ public class Crawler {
         for(Element link : links) {
             String url = link.attr("href");
             if (duplicatedChecker.isDuplicated(url)) {
-                logger.debug("已经爬取过该链接，url: {}", url);
+                logger.warn("已经爬取过该链接，url: {}", url);
                 continue;
             }
             TargetPage targetPage = new TargetPage();
@@ -113,6 +121,10 @@ public class Crawler {
             targetPage.setTitle(link.text());
             targetPage.setCreateTime(new Date());
             targetPage.setHomePageId(homePage.getId());
+            targetPage.setHash(DigestHashUtil.hash(url));
+
+            targetPage.setRole(homePage.getRole2());
+            targetPage.setRole2(homePage.getRole3());
 
             targetPageList.add(targetPage);
         }
@@ -123,100 +135,120 @@ public class Crawler {
     public List<TargetPage> getTargetPageLink2(HomePage homePage) {
 
         List<TargetPage> targetPageList = new ArrayList<TargetPage>();
-        List<String> list = new ArrayList<String>();
         Document document = getDocument(homePage.getUrl());
         if(document == null) {
             return targetPageList;
         }
 
-        Elements linktatall = document.select("span.pageinfo strong");
-        System.out.println(linktatall.get(0).text());
-
-        Elements linkurl = document.select("div.pagelist a");
-
-        String[] baseurl = linkurl.get(0).attr("href").split("_");
-        for (int i = 1; i <= Integer.parseInt(linktatall.get(0).text()); i++) {
-//            if (i == 1) {
-//                continue;
-//            }
-            String str = baseurl[0] + "_" + baseurl[1] + "_" + i + ".html";
-            System.out.println(str);
-            list.add(homePage.getUrl() + str);
+        Elements linktatall = document.select(homePage.getRole());
+        if (linktatall == null) {
+            return targetPageList;
         }
 
-//        Elements links = document.select(homePage.getRole());
-//        if(links == null) {
-//            logger.error("未获取到数据");
-//            return targetPageList;
-//        }
-//
-//        for(Element link : links) {
-//            TargetPage targetPage = new TargetPage();
-//            targetPage.setUrl("http://www.dazui88.com" + link.attr("href"));
-//            targetPage.setTitle(link.text());
-//            System.out.println(targetPage.getUrl()+" "+targetPage.getTitle());
-//            targetPageList.add(targetPage);
-//        }
+        StringBuffer stringBuffer = new StringBuffer();
 
-        for (String s : list) {
-            System.out.println("加载分页网页： " + s);
-            Document doc = getDocument(s);
-            if(doc == null) {
+        for(Element link : linktatall) {
+            String url_target = link.attr("href");
+
+            stringBuffer.delete(0, stringBuffer.length());
+            String url = stringBuffer.append("http://www.netbian.com").append(url_target).toString();
+
+            if (duplicatedChecker.isDuplicated(url)) {
+                logger.warn("已经爬取过该链接，url: {}", url);
                 continue;
             }
 
-            Elements links2 = doc.select(homePage.getRole());
-            if(links2 == null) {
-                logger.error("未获取到数据");
-                continue;
-            }
+            TargetPage targetPage = new TargetPage();
+            targetPage.setUrl(url);
+            targetPage.setTitle(link.text());
+            targetPage.setCreateTime(new Date());
+            targetPage.setHomePageId(homePage.getId());
+            targetPage.setHash(DigestHashUtil.hash(url));
 
-            for(Element link : links2) {
-                TargetPage targetPage = new TargetPage();
-                targetPage.setUrl("http://www.dazui88.com" + link.attr("href"));
-                targetPage.setTitle(link.text());
-                System.out.println(targetPage.getUrl()+" title: "+targetPage.getTitle());
-                targetPageList.add(targetPage);
-            }
+//            targetPage.setRole(homePage.getRole2());
+//            targetPage.setRole2(homePage.getRole3());
 
+            targetPageList.add(targetPage);
 
         }
-
         return targetPageList;
     }
 
-    public void getImagePage2(String url) {
-        System.out.println(url);
-        List<String> list = new ArrayList<String>();
-        Document document = getDocument(url);
+    public List<HomePage> getHomePageTotalList(HomePage homePage) {
+        List<HomePage> homePageList = new ArrayList<>();
+
+        Document document = getDocument(homePage.getUrl());
         if(document == null) {
-            return;
+            return homePageList;
         }
-//        Elements links = document.select("div#efpBigPic img");
-//        for (Element link : links) {
-//            System.out.println(link.attr("src"));
-//        }
-        Elements elements = document.select("div.pagebreak1 a");
-        String s = elements.get(0).text();
-        System.out.println(s.substring(1, s.length() - 2));
-        for (int i = 1; i <= Integer.parseInt(s.substring(1, s.length() - 2)); i++) {
-            if (i == 1) {
-                list.add(url);
+
+        Elements linkPage = document.select(homePage.getTotalPageRole());
+        String totalPage = linkPage.get(5).text();
+        StringBuffer stringBuffer = new StringBuffer();
+
+        for (int i = 1; i <= Integer.parseInt(totalPage); i++) {
+            if(i == 1) {
+                homePageList.add(homePage);
                 continue;
             }
-            String str = url.substring(0, url.lastIndexOf("."));
-            list.add(str + "_" + i + ".html");
+
+            stringBuffer.delete(0, stringBuffer.length());
+
+            HomePage homePageOther = new HomePage();
+
+            String url = stringBuffer.append(homePage.getUrl()).append("index_").append(i).append(".htm").toString();
+            homePageOther.setId(i);
+            homePageOther.setUrl(url);
+            homePageOther.setDynamic(homePage.getDynamic());
+            homePageOther.setRole(homePage.getRole());
+            homePageOther.setSiteName(homePage.getSiteName());
+            homePageList.add(homePageOther);
         }
-        for (String str : list) {
-            Document doc = getDocument(str);
-            if(doc == null) {
-                return;
-            }
-            Elements linkList = doc.select("div#efpBigPic img");
-            for (Element link : linkList) {
-                System.out.println(link.attr("src"));
-            }
+        return homePageList;
+    }
+
+    public List<ImageInfo> getImagePageInfo2(TargetPage targetPage) {
+        List<ImageInfo> imageInfoList = new ArrayList<ImageInfo>();
+        Document document = getDocument(targetPage.getUrl());
+        if(document == null) {
+            logger.error("爬取的目标, 失败的url: {}", targetPage.getUrl());
+            return imageInfoList;
         }
+        Elements links = document.select("div.pic > p > a");
+        for (Element link : links) {
+            String url = link.attr("href");
+            if (duplicatedChecker.isDuplicated(url)) {
+                logger.warn("已经爬取过该链接，url: {}", url);
+                continue;
+            }
+            ImageInfo imageInfo = new ImageInfo();
+            imageInfo.setUrl(url);
+            imageInfo.setTargetUrl(targetPage.getUrl());
+            imageInfo.setHash(DigestHashUtil.hash(url));
+            imageInfo.setCreateTime(new Date());
+            imageInfoList.add(imageInfo);
+        }
+        return imageInfoList;
+    }
+
+    public void craw() {
+        String url = "https://www.mzitu.com/166998";
+
+        Document document = getDocument(url);
+
+        Elements totalLinks = document.select("div.pagenavi > a");
+        String totalPage = totalLinks.get(4).text();
+        List<String> targetUrlList = new ArrayList<String>();
+        for (int i = 1; i <= Integer.parseInt(totalPage); i++) {
+            if(i == 1) {
+                targetUrlList.add(url);
+                continue;
+            }
+            String url1 = url + "/" + i;
+            targetUrlList.add(url1);
+        }
+
+        logger.debug("地址： " + targetUrlList.size());
     }
 
     @Autowired

@@ -4,12 +4,13 @@
     <resultMap id="BaseResultMap" type="com.tianshaokai.crawler.entity.ImageInfo">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="targetUrl" property="targetUrl" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="DATE"/>
         <result column="hash" property="hash" jdbcType="VARCHAR" />
         <result column="targetId" property="targetId" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, url, createTime, hash, targetId
+        id, url, targetUrl, createTime, hash, targetId
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -22,7 +23,7 @@
         <include refid="Base_Column_List"/>
         from t_image_info
     </select>
-    <select id="selectAllImageInfoByPage" resultMap="BaseResultMap" parameterMap="map" >
+    <select id="selectAllImageInfoByPage" resultMap="BaseResultMap" parameterType="map" >
         select
         <include refid="Base_Column_List"/>
         from t_image_info
@@ -32,9 +33,9 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.tianshaokai.crawler.entity.ImageInfo">
-        insert into t_image_info (id, url, createTime, hash,
+        insert into t_image_info (id, url, targetUrl, createTime, hash,
           targetId)
-        values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE},
+        values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{targetUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE},
         #{hash,jdbcType=VARCHAR}, #{targetId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.tianshaokai.crawler.entity.ImageInfo">
@@ -45,6 +46,9 @@
             </if>
             <if test="url != null">
                 url,
+            </if>
+            <if test="targetUrl != null">
+                targetUrl,
             </if>
             <if test="createTime != null">
                 createTime,
@@ -62,6 +66,9 @@
             </if>
             <if test="url != null">
                 #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="targetUrl != null">
+                #{targetUrl,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=DATE},

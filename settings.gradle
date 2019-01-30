@@ -2,4 +2,3 @@ rootProject.name = 'crawler'
 include 'crawler-core'
 include 'crawler-framework'
 include 'crawler-main'
-
